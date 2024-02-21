@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
 @Testcontainers
-class EmployeeDaoTest {
+class EmployeeDaoMySQLTestContainersTest {
 
     @Container
     private static final MySQLContainer<?> MYSQL_CONTAINER =
