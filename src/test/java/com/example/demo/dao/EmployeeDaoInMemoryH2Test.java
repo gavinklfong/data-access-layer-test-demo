@@ -19,14 +19,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Slf4j
 class EmployeeDaoInMemoryH2Test {
 
-    private static final Jdbi jdbi = Jdbi
+    private static final Jdbi DB_CONNECTION = Jdbi
             .create("jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;CASE_INSENSITIVE_IDENTIFIERS=TRUE");
 
     private EmployeeDao employeeDao;
 
     @BeforeAll
     static void setupAll() {
-        jdbi.withHandle(handle ->
+        DB_CONNECTION.withHandle(handle ->
                 handle.createScript(ClasspathSqlLocator.removingComments().getResource("schema.sql"))
                         .execute()
         );
@@ -34,12 +34,12 @@ class EmployeeDaoInMemoryH2Test {
 
     @BeforeEach
     void setup() {
-        employeeDao = new EmployeeDao(jdbi);
+        employeeDao = new EmployeeDao(DB_CONNECTION);
         resetData();
     }
 
     private void resetData() {
-        jdbi.withHandle(handle ->
+        DB_CONNECTION.withHandle(handle ->
                 handle.createScript(ClasspathSqlLocator.removingComments().getResource("employee.sql"))
                         .execute()
         );
@@ -91,7 +91,7 @@ class EmployeeDaoInMemoryH2Test {
 
         assertThat(employeeDao.insertEmployee(newEmployee)).isEqualTo(1);
 
-        Optional<Employee> insertedRecord = jdbi.withHandle(handle ->
+        Optional<Employee> insertedRecord = DB_CONNECTION.withHandle(handle ->
                 handle.createQuery("SELECT id, name, department, salary " +
                                 "FROM EMPLOYEE " +
                                 "WHERE id = :id")
