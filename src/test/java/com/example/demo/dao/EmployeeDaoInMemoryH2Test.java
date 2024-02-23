@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class EmployeeDaoInMemoryH2Test {
 
     private static final Jdbi DB_CONNECTION = Jdbi
-            .create("jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;CASE_INSENSITIVE_IDENTIFIERS=TRUE");
+            .create("jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;MODE=MYSQL;CASE_INSENSITIVE_IDENTIFIERS=TRUE");
 
     private EmployeeDao employeeDao;
 
