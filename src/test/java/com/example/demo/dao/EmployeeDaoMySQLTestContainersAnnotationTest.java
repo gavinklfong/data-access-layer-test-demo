@@ -2,16 +2,15 @@ package com.example.demo.dao;
 
 import com.example.demo.model.Employee;
 import lombok.extern.slf4j.Slf4j;
-import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.locator.ClasspathSqlLocator;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
+
+import org.jdbi.v3.core.Jdbi;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -22,8 +21,10 @@ import static java.util.Map.entry;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
-class EmployeeDaoMySQLTestContainersTest {
+@Testcontainers
+class EmployeeDaoMySQLTestContainersAnnotationTest {
 
+    @Container
     private static final MySQLContainer<?> MYSQL_CONTAINER =
             new MySQLContainer<>(DockerImageName.parse("mysql:latest"))
                     .withInitScript("schema.sql");
@@ -31,17 +32,6 @@ class EmployeeDaoMySQLTestContainersTest {
     private Jdbi jdbi;
 
     private EmployeeDao employeeDao;
-
-    @BeforeAll
-    static void beforeAll() {
-        MYSQL_CONTAINER.start();
-    }
-
-    @AfterAll
-    static void afterAll() {
-        MYSQL_CONTAINER.stop();
-    }
-
 
     @BeforeEach
     void setup() {
